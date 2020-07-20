@@ -17,7 +17,7 @@ date_default_timezone_set('Asia/Novosibirsk');
 
 session_start();
 
-//$db = new \ssp\module\Db($config);
+$db = new \ssp\module\Db($config);
 $msg = new \ssp\module\SessionVar(UID . 'msg');
 $login = new \ssp\module\SessionVar(UID . 'login');
 
@@ -36,8 +36,6 @@ if (isset($param[0])) {
 $id_user = new \ssp\module\SessionVar('id_user');
 $name_user = new \ssp\module\SessionVar('name_user');
 $position_user = new \ssp\module\SessionVar('position_user');
-
-$db = new \ssp\module\Db($config);
 
 if (!$id_user->getValue()) {
     $action = 'login';

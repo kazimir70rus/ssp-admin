@@ -38,6 +38,5 @@ $name_parent = new \ssp\models\User($db);
 
 $list_parent = $name_parent->getListParents();      
 
-//$list_organisation = $name_organisation->getList(); 
-
 require_once 'views/index.php';
+

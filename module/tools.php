@@ -1,6 +1,6 @@
 <?php
 
-namespace ssp-admin\module;
+namespace ssp\module;
 
 Class Tools
 {
