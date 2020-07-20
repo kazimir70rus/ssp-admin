@@ -1,6 +1,7 @@
 <?php
 
 $name_parent = new \ssp\models\User($db);
+$name_organisation = new \ssp\models\User($db);
 
     if (
         !empty($_REQUEST['password']) 
@@ -37,7 +38,6 @@ $name_parent = new \ssp\models\User($db);
     }
 
 $list_parent = $name_parent->getListParents();      
-
-//$list_organisation = $name_organisation->getList(); 
+$list_organisation = $name_organisation->getListOrganisations(); 
 
 require_once 'views/index.php';

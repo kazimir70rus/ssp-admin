@@ -21,7 +21,7 @@ Class User
         }
     }
 
-    function add($login, $password)
+    function add($login, $password, $position, $parent, $organisation)
     {
         $query = 'INSERT INTO users (name, pass, position, id_parent, id_organisation, id_position) values (:login, :password, :position, :parent, :organisation)';
 
@@ -50,6 +50,15 @@ Class User
     function getListParents()
     {
         $query ='select id_user, name from users where id_parent like 1 order by name';
+
+        return $this
+                    ->db
+                    ->getList($query);
+    }
+
+    function getListOrganisations()
+    {
+        $query ='select id_organisation, name from organisations order by name';
 
         return $this
                     ->db
