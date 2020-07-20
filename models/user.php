@@ -38,7 +38,7 @@ Class User
                     ->db
                     ->getRow($query, ['id_user' => $id_user]);
     }
-function check($login, $pass)
+    function check($login, $pass)
     {
         $query ='select id_user, position from users where name = :login and pass = password(:pass)';
 
@@ -47,9 +47,9 @@ function check($login, $pass)
                     ->getRow($query, ['login' => $login, 'pass' => $pass]);
     }
 
-    function getList()
+    function getListParents()
     {
-        $query ='select id_user, name from users order by name';
+        $query ='select id_user, name from users where id_parent like 1 order by name';
 
         return $this
                     ->db

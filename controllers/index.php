@@ -1,5 +1,7 @@
 <?php
 
+$name_parent = new \ssp\models\User($db);
+
     if (
         !empty($_REQUEST['password']) 
         and !empty($_REQUEST['password2'])
@@ -33,5 +35,9 @@
     } else {
         $msg->setValue('Нет данных для регистрации');
     }
+
+$list_parent = $name_parent->getListParents();      
+
+//$list_organisation = $name_organisation->getList(); 
 
 require_once 'views/index.php';

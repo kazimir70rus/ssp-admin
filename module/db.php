@@ -26,6 +26,16 @@ Class Db
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    function getListParents($query, $params = [])
+    {
+        $stmt = $this
+                    ->db
+                    ->prepare($query);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     function getRow($query, $params = [])
     {
         $stmt = $this
