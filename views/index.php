@@ -24,8 +24,10 @@
 
 <div id="app" class="cont">
     <div class="el" style="flex-grow: 1">
-        <div><span v-on:click="getLead(lead.id_parent)">{{lead.name}}</span></div>
-        <div v-for="(executor, index) in executors" class="exe"><span v-on:click="getLead(executor.id_user)">{{executor.name}} - {{executor.org}}</span></div>
+        <div><span v-on:click="getLead(lead.id_parent)" class="nav">{{lead.name}}</span></div>
+        <div v-for="(executor, index) in executors" class="exe">
+            <span v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}} - {{executor.org}}</span>
+        </div>
     </div>
     <div class="el" style="flex-grow: 4">
         <div>
