@@ -12,7 +12,7 @@
 <form method="post">
 
     <div class="wdth">
-        <h3>Авторизация для Админа</h3>
+        <h3>Авторизация</h3>
     </div>
 
     <form method="post">

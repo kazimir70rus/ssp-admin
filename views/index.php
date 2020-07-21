@@ -20,7 +20,7 @@
 <body>
 <?php require_once 'logout.html' ?>
 
-<h3>страница для Админа</h3>
+<h3>Добавление нового пользователя</h3>
 
 <div id="app" class="cont">
     <div class="el" style="flex-grow: 1">
