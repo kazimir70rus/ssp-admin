@@ -17,11 +17,13 @@ $name_parent = new \ssp\models\User($db);
         if ($password == $password2) {
 
             $user = new \ssp\models\User($db);
-            $id_user = $user->add($login, $password, $position, $parent, $organisation);
+            $position = htmlspecialchars($_POST['position']);
+            $id_parent = (int)$_POST['id_parent'];
+            $id_org = (int)$_POST['id_org'];
+            $id_user = $user->add($login, $password, $position, $id_parent, $id_org);
             
             if ($id_user != -1) {
-                header('Location: ' . BASE_URL);
-                exit;
+                $msg->setValue('Пользователь добавлен');
             } else {
                 if ($db->errInfo[1] == 1062) {
                     $msg->setValue('Ошибка! Пользоватль с таким именем есть в базе');

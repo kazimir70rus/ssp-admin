@@ -23,20 +23,20 @@ Class User
     }
 
     
-    function add($login, $password)
+    function add($login, $password, $position, $id_parent, $id_org)
     {
         $query = '
-            insert into users (name, pass, position, id_parent, id_organisation, id_position) 
+            insert into users (name, pass, position, id_parent, id_organisation) 
             values (:login, :password, :position, :parent, :organisation)';
 
         return $this
                     ->db
                     ->insertData($query, [
-                                            'name'         => $login, 
-                                            'pass'         => $password, 
+                                            'login'        => $login, 
+                                            'password'     => $password, 
                                             'position'     => $position, 
-                                            'id_parent'    => $parent, 
-                                            'organisation' => $id_organisation,
+                                            'parent'       => $id_parent, 
+                                            'organisation' => $id_org,
                                          ]);
     }
 
@@ -93,7 +93,7 @@ Class User
     {
         $query ='
             select
-                id_user, users.name as name, if(id_parent = 0, id_user, id_parent) as id_parent, organisations.name as org
+                id_user, users.name as name, if(id_parent = 0, id_user, id_parent) as id_parent, organisations.name as org, id_organisation as id_org
             from
                 users join organisations using (id_organisation)
             where

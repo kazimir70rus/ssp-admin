@@ -33,8 +33,10 @@
                 Логин:<br><input type="text" name="login" id="login"><br>
                 Должность:<br><input type="text" name="position" id="position"><br>
                 Руководитель: {{lead.name}}<br>
+                <input type="hidden" v-model="lead.id_user" name="id_parent">
                 <br>
                 Организация: {{lead.org}}<br>
+                <input type="hidden" v-model="lead.id_org" name="id_org">                
                 <br>
                 Пароль:<br><input type="password" name="password" id="pass"><br>
                 Подтверждение:<br><input type="password" name="password2" id="re_pass" ><br>
