@@ -10,7 +10,7 @@ Class User
 
     public $name;
 
-    
+
     function __construct($db, $id_user = 0, $position = '')
     {
         $this->db = $db;
@@ -22,25 +22,25 @@ Class User
         }
     }
 
-    
+
     function add($login, $password, $position, $id_parent, $id_org)
     {
         $query = '
-            insert into users (name, pass, position, id_parent, id_organisation) 
-            values (:login, :password, :position, :parent, :organisation)';
+            insert into users (name, pass, position, id_parent, id_organisation)
+            values (:login, password(:password), :position, :parent, :organisation)';
 
         return $this
                     ->db
                     ->insertData($query, [
-                                            'login'        => $login, 
-                                            'password'     => $password, 
-                                            'position'     => $position, 
-                                            'parent'       => $id_parent, 
+                                            'login'        => $login,
+                                            'password'     => $password,
+                                            'position'     => $position,
+                                            'parent'       => $id_parent,
                                             'organisation' => $id_org,
                                          ]);
     }
 
-    
+
     function getInfo($id_user)
     {
         $query = 'select name from users where id_user = :id_user';
