@@ -11,14 +11,14 @@
 
 <form method="post">
 
-    <div class="wdth">
-        <h3>Авторизация</h3>
-    </div>
+    <h3>Авторизация</h3><br>
 
     <form method="post">
-        <input type="text" name="login">
-        <input type="password" name="pass">
-        <input type="submit" name="submit" value="Вход">
+        Логин:<br>
+        <input type="text" name="login" class="input input_text"><br>
+        Пароль:<br>
+        <input type="password" name="pass" class="input input_text"><br>
+        <input type="submit" name="submit" value="Вход" class="input input_button"><br>
     </form>
 
     <br>
