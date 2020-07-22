@@ -2,16 +2,17 @@
 
 $name_parent = new \ssp\models\User($db);
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (
-        !empty($_REQUEST['password']) 
-        and !empty($_REQUEST['password2'])
-        and !empty($_REQUEST['login'])
+        !empty($_POST['password']) 
+        and !empty($_POST['password2'])
+        and !empty($_POST['login'])
     ) {
 
         //Пишем логин и пароль из формы в переменные (для удобства работы):
-        $login = $_REQUEST['login']; 
-        $password = $_REQUEST['password']; 
-        $password2 = $_REQUEST['password2']; //подтверждение пароля
+        $login = $_POST['login']; 
+        $password = $_POST['password']; 
+        $password2 = $_POST['password2']; //подтверждение пароля
 
         //Если пароль и его подтверждение совпадают...
         if ($password == $password2) {
@@ -37,6 +38,7 @@ $name_parent = new \ssp\models\User($db);
     } else {
         $msg->setValue('Нет данных для регистрации');
     }
+}
 
 $list_parent = $name_parent->getListParents();      
 

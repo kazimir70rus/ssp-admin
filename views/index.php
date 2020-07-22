@@ -10,39 +10,55 @@
         }
 
         .el {
-            border: 1px solid grey;
         }
         .exe {
             margin-left: 3rem;
+            margin-top: 0.5rem;
+        }
+        .nav {
+            text-decoration: underline;
+            cursor: pointer;
+            color: blue;
         }
     </style>
 </head>
 <body>
+
 <?php require_once 'logout.html' ?>
 
 <h3>Добавление нового пользователя</h3>
 
+<br>
+
 <div id="app" class="cont">
-    <div class="el" style="flex-grow: 1">
-        <div><span v-on:click="getLead(lead.id_parent)" class="nav">{{lead.name}}</span></div>
+    <div class="el" style="flex-grow: 1; flex-basis: 200px;">
+        <div>
+            <span v-on:click="getLead(lead.id_parent)" class="nav">{{lead.name}}</span>
+        </div>
         <div v-for="(executor, index) in executors" class="exe">
             <span v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}} - {{executor.org}}</span>
         </div>
     </div>
-    <div class="el" style="flex-grow: 4">
+    <div class="el" style="flex-grow: 3; flex-basis: 500px;">
         <div>
             <form method="post">
-                Логин:<br><input type="text" name="login" id="login"><br>
-                Должность:<br><input type="text" name="position" id="position"><br>
-                Руководитель: {{lead.name}}<br>
-                <input type="hidden" v-model="lead.id_user" name="id_parent">
-                <br>
-                Организация: {{lead.org}}<br>
-                <input type="hidden" v-model="lead.id_org" name="id_org">                
-                <br>
-                Пароль:<br><input type="password" name="password" id="pass"><br>
-                Подтверждение:<br><input type="password" name="password2" id="re_pass" ><br>
-                <input type="submit" name="GO" value="Регистрация">
+                Руководитель: {{lead.name}}
+                <input type="hidden" v-model="lead.id_user" name="id_parent"><br>
+                Организация: {{lead.org}}
+                <input type="hidden" v-model="lead.id_org" name="id_org"><br>
+                <div>
+                    Должность:<br><input type="text" name="position" class="input input_text">
+                </div>
+                <div>
+                    Логин:<br><input type="text" name="login" class="input input_text">
+                </div>
+                <div>
+                    Пароль:<br><input type="password" name="password" id="pass" class="input input_text">
+                </div>
+                <div>
+                    Подтверждение:<br><input type="password" name="password2" id="re_pass" class="input input_text">
+                </div>
+                <input type="submit" name="GO" value="Регистрация" class="input input_button">
             </form>
         </div>
 
