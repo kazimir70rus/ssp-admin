@@ -23,20 +23,21 @@ Class User
     }
 
 
-    function add($login, $password, $position, $id_parent, $id_org)
+    function add($info)
     {
         $query = '
-            insert into users (name, pass, position, id_parent, id_organisation)
-            values (:login, password(:password), :position, :parent, :organisation)';
+            insert into users (name, pass, position, id_parent, id_organisation, is_controller)
+            values (:login, password(:password), :position, :parent, :id_org, :is_controller)';
 
         return $this
                     ->db
                     ->insertData($query, [
-                                            'login'        => $login,
-                                            'password'     => $password,
-                                            'position'     => $position,
-                                            'parent'       => $id_parent,
-                                            'organisation' => $id_org,
+                                            'login'         => $info['login'],
+                                            'password'      => $info['password'],
+                                            'position'      => $info['position'],
+                                            'parent'        => $info['id_parent'],
+                                            'id_org'        => $info['id_org'],
+                                            'is_controller' => $info['is_controller'],
                                          ]);
     }
 

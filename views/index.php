@@ -11,10 +11,12 @@
 
         .el {
         }
+
         .exe {
             margin-left: 3rem;
             margin-top: 0.5rem;
         }
+
         .nav {
             text-decoration: underline;
             cursor: pointer;
@@ -35,29 +37,59 @@
         <div>
             <span v-on:click="getLead(lead.id_parent)" class="nav">{{lead.name}}</span>
         </div>
-        <div v-for="(executor, index) in executors" class="exe">
-            <span v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}} - {{executor.org}}</span>
-        </div>
+        <table class="exe">
+            <tr>
+                <th>логин</th>
+                <th>организация</th>
+            </tr>
+            <tr v-for="(executor, index) in executors">
+                <td v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}}</td>
+                <td>{{executor.org}}</td>
+                <td class="b">&bull;&bull;&bull;</td>
+            </tr>
+        </table>
     </div>
     <div class="el" style="flex-grow: 3; flex-basis: 500px;">
         <div>
             <form method="post">
                 Руководитель: {{lead.name}}
                 <input type="hidden" v-model="lead.id_user" name="id_parent"><br>
+                
                 Организация: {{lead.org}}
                 <input type="hidden" v-model="lead.id_org" name="id_org"><br>
+
                 <div>
                     Должность:<br><input type="text" name="position" class="input input_text">
                 </div>
+
+                <div style="font-color: red;">
+                    <input type="text" list="listid" class="input input_text">
+                    <datalist id="listid">
+                        <option style="background: red">инженер</option>
+                        <option>бухгалтер</option>
+                        <option>монтажник</option>
+                        <option>слесарь</option>
+                        <option>сантехник</option>
+                        <option>электрик</option>
+                    </datalist>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="is_controller" class="input_checkbox"> контроллер
+                </div>
+
                 <div>
                     Логин:<br><input type="text" name="login" class="input input_text">
                 </div>
+
                 <div>
                     Пароль:<br><input type="password" name="password" id="pass" class="input input_text">
                 </div>
+
                 <div>
                     Подтверждение:<br><input type="password" name="password2" id="re_pass" class="input input_text">
                 </div>
+
                 <input type="submit" name="GO" value="Регистрация" class="input input_button">
             </form>
         </div>
