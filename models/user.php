@@ -26,15 +26,15 @@ Class User
     function add($info)
     {
         $query = '
-            insert into users (name, pass, position, id_parent, id_organisation, is_controller)
-            values (:login, password(:password), :position, :parent, :id_org, :is_controller)';
+            insert into users (name, pass, id_position, id_parent, id_organisation, is_controller)
+            values (:login, password(:password), :id_position, :parent, :id_org, :is_controller)';
 
         return $this
                     ->db
                     ->insertData($query, [
                                             'login'         => $info['login'],
                                             'password'      => $info['password'],
-                                            'position'      => $info['position'],
+                                            'id_position'   => $info['id_position'],
                                             'parent'        => $info['id_parent'],
                                             'id_org'        => $info['id_org'],
                                             'is_controller' => $info['is_controller'],
@@ -76,9 +76,11 @@ Class User
     {
         $query ='
             select
-                id_user, users.name as name, organisations.name as org
+                id_user, users.name as name, organisations.name as org, positions.name as position
             from 
-                users join organisations using (id_organisation)
+                users
+                left join organisations using (id_organisation)
+                left join positions using (id_position)
             where 
                 id_parent = :id_lead order by name';
 
@@ -103,5 +105,48 @@ Class User
         return $this
                     ->db
                     ->getRow($query, ['id_lead' => $id_lead]);
+    }
+
+
+    // поиск должности по подстроке
+    function seekPosition($position)
+    {
+
+        $seek = "%{$position}%";
+
+        $query = 'select id_position, name from positions where name like :position limit 4';
+
+        return $this
+                    ->db
+                    ->getList($query, ['position' => $seek]);
+    }
+
+
+    // возвращает id должности, если должность не существует, добавляет
+    function getIdPosition($position)
+    {
+        $query ='select id_position from positions where name = :position';
+
+        $result = $this->db->getRow($query, ['position' => $position]);
+
+        if (is_array($result) > 0) {
+
+            return $result['id_position'];
+        } else {
+            $query ='insert into positions (name) values (:position)';
+
+            return $this->db->insertData($query, ['position' => $position]);
+        }
+    }
+
+
+    // возвращает список организаций
+    function getOrganisations()
+    {
+        $query = 'select id_organisation, name from organisations order by name';
+
+        return $this
+                    ->db
+                    ->getList($query);
     }
 }

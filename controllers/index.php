@@ -15,7 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $info = [];
         $info['login'] = htmlspecialchars($_POST['login']);
         $info['password'] = htmlspecialchars($_POST['password']);
-        $info['position'] = htmlspecialchars($_POST['position']);
+
+        $info['id_position'] = $user->getIdPosition(htmlspecialchars($_POST['position']));
+
         $info['id_parent'] = (int)$_POST['id_parent'];
         $info['id_org'] = (int)$_POST['id_org'];
         $info['is_controller'] = isset($_POST['is_controller']) ? 1 : 0;
