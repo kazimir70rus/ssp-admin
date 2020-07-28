@@ -19,7 +19,6 @@ session_start();
 
 $db = new \ssp\module\Db($config);
 $msg = new \ssp\module\SessionVar(UID . 'msg');
-$login = new \ssp\module\SessionVar(UID . 'login');
 
 if (isset($_GET['url'])) {
     $param = explode('/', $_GET['url']);

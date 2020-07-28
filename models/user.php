@@ -54,7 +54,7 @@ Class User
 
     function check($login, $pass)
     {
-        $query ='select id_user, position from users where name = :login and pass = password(:pass)';
+        $query ='select id_user, positions.name as position from users join positions using (id_position) where users.name = :login and pass = password(:pass)';
 
         return $this
                     ->db
