@@ -55,7 +55,7 @@
                 <input type="hidden" v-model="lead.id_user" name="id_parent"><br>
                 
                 Организация: {{lead.org}}<br>
-                <select class="input" v-model="id_org" name="id_org">
+                <select class="input" v-model="userData.id_org" name="id_org">
                     <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
                 </select>
 
@@ -68,22 +68,23 @@
                 </select>
 
                 <div>
-                    <input type="checkbox" name="is_controller" class="input_checkbox"> контроллер
+                    <input type="checkbox" v-model="userData.is_controller" name="is_controller" class="input_checkbox"> контроллер
                 </div>
 
                 <div>
-                    Логин:<br><input type="text" name="login" class="input input_text">
+                    Логин:<br><input type="text" v-model="userData.login" name="login" class="input input_text">
                 </div>
 
                 <div>
-                    Пароль:<br><input type="password" name="password" id="pass" class="input input_text">
+                    Пароль:<br><input type="password" v-model="userData.password" name="password" id="pass" class="input input_text">
                 </div>
 
                 <div>
-                    Подтверждение:<br><input type="password" name="password2" id="re_pass" class="input input_text">
+                    Подтверждение:<br><input type="password" v-model="userData.password2" name="password2" id="re_pass" class="input input_text">
                 </div>
 
-                <input type="submit" name="GO" value="Регистрация" class="input input_button">
+                <input type="button" v-on:click="saveUser" value="Регистрация" class="input input_button">
+                <div>{{message}}</div>
             </form>
         </div>
 
@@ -93,8 +94,6 @@
     <div style="flex-grow: 1;">
     </div>
 </div>
-
-<div><?=$msg->popValue()?></div>
 
 <script src="<?=BASE_URL?>js/vue.min.js"></script>
 <script src="<?=BASE_URL?>js/vue-resource.min.js"></script>
@@ -114,7 +113,8 @@ var app = new Vue({
         lead: '',
         controllers: [],
         organisations: [],
-        id_org: 0,
+        userData: {},
+        message: '',
     },
     watch: {
         position: function () {
@@ -136,7 +136,7 @@ var app = new Vue({
                     this.getControllers();
                     // запрашиваем организации
                     this.getOrganisations();
-                    this.id_org = parseInt(this.lead.id_org);
+                    this.userData.id_org = parseInt(this.lead.id_org);
                 },
                 function (err) {
                     console.log(err);
@@ -157,6 +157,23 @@ var app = new Vue({
             this.$http.get(this.server + 'getorganisations/').then(
                 function (otvet) {
                     this.organisations = otvet.data;
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        },
+        saveUser: function(id) {
+            this.message = '';
+            this.userData.position = this.position;
+            this.userData.id_parent = this.lead.id_user;
+
+            this.$http.post(this.server + 'index/', this.userData).then(
+                function (otvet) {
+                    this.message = otvet.data.message;
+                    this.userData = {};
+                    this.position = '';
+                    this.getLead(this.lead.id_user);
                 },
                 function (err) {
                     console.log(err);

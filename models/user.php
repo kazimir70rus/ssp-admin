@@ -96,7 +96,8 @@ Class User
     {
         $query ='
             select
-                id_user, users.name as name, if(id_parent = 0, id_user, id_parent) as id_parent, organisations.name as org, id_organisation as id_org
+                id_user, users.name as name,
+                if(id_parent = 0, id_user, id_parent) as id_parent, organisations.name as org, id_organisation as id_org
             from
                 users join organisations using (id_organisation)
             where
