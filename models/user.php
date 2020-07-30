@@ -150,4 +150,60 @@ Class User
                     ->db
                     ->getList($query);
     }
+
+
+    // возвращает детельную информацию по пользователю
+    function getUserInfo($id_user)
+    {
+        $query = '
+            select
+                users.name as login, positions.name as position, id_organisation, is_controller
+            from
+                users
+                join positions using (id_position)
+            where
+                id_user = :id_user';
+
+        return $this
+                    ->db
+                    ->getRow($query, ['id_user' => $id_user]);
+    }
+
+
+    // обновление информации о пользователе
+    function update($info)
+    {
+       $params = [ 
+                    'id_user'       => $info['id_user'],
+                    'login'         => $info['login'],
+                    'id_position'   => $info['id_position'],
+                    'id_parent'     => $info['id_parent'],
+                    'id_org'        => $info['id_org'],
+                    'is_controller' => $info['is_controller'],
+                 ];
+
+        if (strlen($info['password']) != 0) {
+            $new_pass = 'pass = password(:password), ';
+            $params['password'] = $info['password'];
+        } else {
+            $new_pass = '';
+        }
+
+        $query = '
+            update users
+                set
+                    name = :login,
+                    id_position = :id_position,
+                    id_organisation = :id_org,
+                    id_parent = :id_parent,
+                    ' . $new_pass . '
+                    is_controller = :is_controller
+            where
+                id_user = :id_user';
+
+        return $this
+                    ->db
+                    ->updateData($query, $params); 
+    }
 }
+

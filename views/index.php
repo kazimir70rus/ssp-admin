@@ -44,7 +44,7 @@
                 <td v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}}</td>
                 <td>{{executor.position}}</td>
                 <td>{{executor.org}}</td>
-                <td class="b">&bull;&bull;&bull;</td>
+                <td v-on:click="editUser(executor.id_user)" class="nav b">&bull;&bull;&bull;</td>
             </tr>
         </table>
     </div>
@@ -83,7 +83,13 @@
                     Подтверждение:<br><input type="password" v-model="userData.password2" name="password2" id="re_pass" class="input input_text">
                 </div>
 
-                <input type="button" v-on:click="saveUser" value="Регистрация" class="input input_button">
+                <div v-if="edit_mode">
+                    <input type="button" v-on:click="exitEditMode" value="Отмена" class="input input_button"></br>
+                    <input type="button" v-on:click="updateInfo" value="Сохранить" class="input input_button">
+                </div>
+                <div v-else>
+                    <input type="button" v-on:click="saveUser" value="Регистрация" class="input input_button">
+                </div>
                 <div>{{message}}</div>
             </form>
         </div>
@@ -104,7 +110,6 @@ var app = new Vue({
     el: '#app',
     data: {
         server: '<?=BASE_URL?>',
-        txt: 'навигационная панель',
         executors: [],
         pos_visible: false,
         positions: [],
@@ -115,6 +120,7 @@ var app = new Vue({
         organisations: [],
         userData: {},
         message: '',
+        edit_mode: false,
     },
     watch: {
         position: function () {
@@ -131,9 +137,12 @@ var app = new Vue({
                 function (otvet) {
                     this.lead = otvet.data;
                     // после получения информации по лидеру,
+                    // очищаем форму если не в режиме редактирования
+                    if (!this.edit_mode) {
+                        this.clearForm();
+                    }
                     // запрашиваем список подчиненных
                     this.getExecutors(id);
-                    this.getControllers();
                     // запрашиваем организации
                     this.getOrganisations();
                     this.userData.id_org = parseInt(this.lead.id_org);
@@ -171,8 +180,6 @@ var app = new Vue({
             this.$http.post(this.server + 'index/', this.userData).then(
                 function (otvet) {
                     this.message = otvet.data.message;
-                    this.userData = {};
-                    this.position = '';
                     this.getLead(this.lead.id_user);
                 },
                 function (err) {
@@ -196,11 +203,49 @@ var app = new Vue({
                 }
             );
         },
-        getControllers: function() {
+        editUser: function(id_user) {
+            this.position = '';
+            this.$http.get(this.server + 'getuserinfo/' + id_user).then(
+                function (otvet) {
+                    this.userData.id_org = otvet.data.id_organisation;
+                    this.userData.login = otvet.data.login;
+                    this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
+                    this.userData.id_user = id_user;
+                    this.position = otvet.data.position;
+                    this.edit_mode = true;
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        },
+        exitEditMode: function() {
+            this.edit_mode = false;
+            this.clearForm();
+        },
+        updateInfo: function() {
+            this.message = '';
+            this.userData.position = this.position;
+            this.userData.id_parent = this.lead.id_user;
+
+            this.$http.post(this.server + 'updateinfo/', this.userData).then(
+                function (otvet) {
+                    this.exitEditMode();
+                    this.message = otvet.data.message;
+                    this.getLead(this.lead.id_user);
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
         },
         hide: function() {
             this.pos_visible = false;
             this.position = this.name_position;
+        },
+        clearForm: function () {
+            this.userData = {};
+            this.position = '';
         },
     },
     created: function() {
