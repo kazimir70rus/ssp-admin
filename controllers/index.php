@@ -16,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $info['is_controller'] = isset($info['is_controller']) ? 1 : 0;
         $id_user = $user->add($info);
-        
+
         if ($id_user != -1) {
             $message = 'Пользователь добавлен';
         } else {
             if ($db->errInfo[1] == 1062) {
-                $message = 'Ошибка! Пользоватль с таким именем есть в базе';
+                $message = 'Ошибка! Пользователь с таким именем зарегистрирован';
             } else {
                 $message = 'Ошибка при добавлении пользователя';
             } 

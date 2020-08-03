@@ -7,6 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json_userData = file_get_contents('php://input');
     $info = json_decode($json_userData, true);
 
+    $info['password'] = $info['password'] ?? '';
+    $info['password2'] = $info['password2'] ?? '';
+
     //Если пароль и его подтверждение совпадают...
     if ($info['password'] == $info['password2']) {
 
@@ -17,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $info['is_controller'] = ($info['is_controller'] == true) ? 1 : 0;
 
         $result = $user->update($info);
-        
+
         if ($result != -1) {
             $message = 'Данные пользователя обновлены';
         } else {
             if ($db->errInfo[1] == 1062) {
-                $message = 'Ошибка! Пользоватль с таким именем есть в базе';
+                $message = 'Ошибка! Пользоватeль с таким именем зарегистрирован';
             } else {
                 $message = 'Ошибка при обновлении данных';
             } 

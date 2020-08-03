@@ -26,8 +26,8 @@ Class User
     function add($info)
     {
         $query = '
-            insert into users (name, pass, id_position, id_parent, id_organisation, is_controller)
-            values (:login, password(:password), :id_position, :parent, :id_org, :is_controller)';
+            insert into users (name, pass, id_position, id_parent, id_organisation, is_controller, fio)
+            values (:login, password(:password), :id_position, :parent, :id_org, :is_controller, :fio)';
 
         return $this
                     ->db
@@ -38,6 +38,7 @@ Class User
                                             'parent'        => $info['id_parent'],
                                             'id_org'        => $info['id_org'],
                                             'is_controller' => $info['is_controller'],
+                                            'fio'           => $info['fio'],
                                          ]);
     }
 
@@ -76,7 +77,7 @@ Class User
     {
         $query ='
             select
-                id_user, users.name as name, organisations.name as org, positions.name as position
+                id_user, users.name as name, organisations.name as org, positions.name as position, fio
             from 
                 users
                 left join organisations using (id_organisation)
@@ -87,25 +88,6 @@ Class User
         return $this
                     ->db
                     ->getList($query, ['id_lead' => $id_lead]);
-    }
-
-
-    // возвращает информацию о руководителе
-    // сделана заглушка: у директора возвращает его id_user
-    function getLead($id_lead)
-    {
-        $query ='
-            select
-                id_user, users.name as name,
-                if(id_parent = 0, id_user, id_parent) as id_parent, organisations.name as org, id_organisation as id_org
-            from
-                users join organisations using (id_organisation)
-            where
-                id_user = :id_lead';
-
-        return $this
-                    ->db
-                    ->getRow($query, ['id_lead' => $id_lead]);
     }
 
 
@@ -153,14 +135,23 @@ Class User
 
 
     // возвращает детельную информацию по пользователю
+    // сделана заглушка: у директора возвращает его id_user
     function getUserInfo($id_user)
     {
         $query = '
             select
-                users.name as login, positions.name as position, id_organisation, is_controller
+                id_user,
+                if(id_parent = 0, id_user, id_parent) as id_parent,
+                fio,
+                users.name as login, 
+                positions.name as position, 
+                users.id_organisation as id_organisation,
+                organisations.name as organisation,
+                is_controller
             from
                 users
                 join positions using (id_position)
+                join organisations using (id_organisation)
             where
                 id_user = :id_user';
 
@@ -176,6 +167,7 @@ Class User
        $params = [ 
                     'id_user'       => $info['id_user'],
                     'login'         => $info['login'],
+                    'fio'           => $info['fio'],
                     'id_position'   => $info['id_position'],
                     'id_parent'     => $info['id_parent'],
                     'id_org'        => $info['id_org'],
@@ -193,6 +185,7 @@ Class User
             update users
                 set
                     name = :login,
+                    fio = :fio,
                     id_position = :id_position,
                     id_organisation = :id_org,
                     id_parent = :id_parent,

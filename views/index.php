@@ -32,16 +32,24 @@
 <div id="app" class="cont">
     <div style="margin-right: 5rem">
         <div>
-            <span v-on:click="getLead(lead.id_parent)" class="nav">{{lead.name}}</span>
+            <table style="border-bottom: 2px solid grey;">
+                <tr>
+                    <td v-on:click="getLead(lead.id_parent)" class="nav">{{lead.login}}</td>
+                    <td>{{lead.position}}</td>
+                    <td>{{lead.organisation}}</td>
+                </tr>
+            </table>
         </div>
         <table class="exe">
             <tr>
                 <th>логин</th>
+                <th>ФИО</th>
                 <th>должность</th>
                 <th>организация</th>
             </tr>
             <tr v-for="(executor, index) in executors">
                 <td v-on:click="getLead(executor.id_user)" class="nav">{{executor.name}}</td>
+                <td>{{executor.fio}}</td>
                 <td>{{executor.position}}</td>
                 <td>{{executor.org}}</td>
                 <td v-on:click="editUser(executor.id_user)" class="nav b">&bull;&bull;&bull;</td>
@@ -51,10 +59,10 @@
     <div style="flex-grow: 3; flex-basis: 300px;">
         <div>
             <form method="post">
-                Руководитель: {{lead.name}}
+                Руководитель: {{lead.login}}
                 <input type="hidden" v-model="lead.id_user" name="id_parent"><br>
                 
-                Организация: {{lead.org}}<br>
+                Организация:<br>
                 <select class="input" v-model="userData.id_org" name="id_org">
                     <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
                 </select>
@@ -73,6 +81,10 @@
 
                 <div>
                     Логин:<br><input type="text" v-model="userData.login" name="login" class="input input_text">
+                </div>
+
+                <div>
+                    ФИО:<br><input type="text" v-model="userData.fio" name="fio" class="input input_text">
                 </div>
 
                 <div>
@@ -133,7 +145,7 @@ var app = new Vue({
     },
     methods: {
         getLead: function(id) {
-            this.$http.post(this.server + 'getlead/' + id).then(
+            this.$http.get(this.server + 'getlead/' + id).then(
                 function (otvet) {
                     this.lead = otvet.data;
                     // после получения информации по лидеру,
@@ -145,7 +157,7 @@ var app = new Vue({
                     this.getExecutors(id);
                     // запрашиваем организации
                     this.getOrganisations();
-                    this.userData.id_org = parseInt(this.lead.id_org);
+                    this.userData.id_org = parseInt(this.lead.id_organisation);
                 },
                 function (err) {
                     console.log(err);
@@ -153,7 +165,7 @@ var app = new Vue({
             );
         },
         getExecutors: function(id) {
-            this.$http.post(this.server + 'getexecutors/' + id).then(
+            this.$http.get(this.server + 'getexecutors/' + id).then(
                 function (otvet) {
                     this.executors = otvet.data;
                 },
@@ -204,6 +216,7 @@ var app = new Vue({
             );
         },
         editUser: function(id_user) {
+            this.message = '';
             this.position = '';
             this.$http.get(this.server + 'getuserinfo/' + id_user).then(
                 function (otvet) {
@@ -211,6 +224,7 @@ var app = new Vue({
                     this.userData.login = otvet.data.login;
                     this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
                     this.userData.id_user = id_user;
+                    this.userData.fio = otvet.data.fio;
                     this.position = otvet.data.position;
                     this.edit_mode = true;
                 },
