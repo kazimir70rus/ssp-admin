@@ -80,11 +80,11 @@
                 </div>
 
                 <div>
-                    Логин:<br><input type="text" v-model="userData.login" name="login" class="input input_text">
+                    ФИО:<br><input type="text" v-model="fio" name="fio" class="input input_text">
                 </div>
 
                 <div>
-                    ФИО:<br><input type="text" v-model="userData.fio" name="fio" class="input input_text">
+                    Логин:<br><input type="text" v-model="userData.login" name="login" class="input input_text">
                 </div>
 
                 <div>
@@ -133,6 +133,7 @@ var app = new Vue({
         userData: {},
         message: '',
         edit_mode: false,
+        fio: '',
     },
     watch: {
         position: function () {
@@ -141,6 +142,25 @@ var app = new Vue({
             } else {
                 this.pos_visible = false;
             }
+        },
+        fio: function () {
+            // попробуем сформировать логин
+            let fio = this.fio;
+            if (fio.length == 0) {
+                this.userData.login = '';
+                return;
+            }
+
+            fio = fio.replace('.', ' ');
+            m_fio = fio.split(' ');
+
+            let inicials = '';
+
+            for (i = 0; i < m_fio.length; ++i) {
+                inicials += m_fio[i].charAt(0).toUpperCase();
+            }
+
+            this.userData.login = inicials;
         },
     },
     methods: {
@@ -188,6 +208,7 @@ var app = new Vue({
             this.message = '';
             this.userData.position = this.position;
             this.userData.id_parent = this.lead.id_user;
+            this.userData.fio = this.fio;
 
             this.$http.post(this.server + 'index/', this.userData).then(
                 function (otvet) {
@@ -224,7 +245,7 @@ var app = new Vue({
                     this.userData.login = otvet.data.login;
                     this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
                     this.userData.id_user = id_user;
-                    this.userData.fio = otvet.data.fio;
+                    this.fio = otvet.data.fio;
                     this.position = otvet.data.position;
                     this.edit_mode = true;
                 },
@@ -241,6 +262,7 @@ var app = new Vue({
             this.message = '';
             this.userData.position = this.position;
             this.userData.id_parent = this.lead.id_user;
+            this.userData.fio = this.fio;
 
             this.$http.post(this.server + 'updateinfo/', this.userData).then(
                 function (otvet) {
