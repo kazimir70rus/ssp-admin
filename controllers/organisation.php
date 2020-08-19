@@ -1,5 +1,7 @@
 <?php
 
+$id_org = (int)$param[1] ?? 0;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['name'])) {
         $name = htmlspecialchars($_POST['name'], ENT_NOQUOTES);

@@ -45,7 +45,7 @@ var app = new Vue({
     data: {
         server: '<?=BASE_URL?>',
         organisations: [],
-        id: 0,
+        id: <?=$id_org?>,
         name: '',
     },
     watch: {
@@ -82,6 +82,7 @@ var app = new Vue({
     },
     created: function() {
         this.getOrganisations();
+
     }
 })
 

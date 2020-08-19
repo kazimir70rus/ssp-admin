@@ -61,13 +61,11 @@
             <form method="post">
                 Руководитель: {{lead.login}}
                 <input type="hidden" v-model="lead.id_user" name="id_parent"><br>
-                
-                Организация:<br>
-                <select class="input" v-model="userData.id_org" name="id_org">
+                Организация (<a v-bind:href="'<?=BASE_URL?>organisation/' + id_org">редактирование</a>):<br>
+                <select class="input" v-model="id_org" name="id_org">
                     <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
                 </select>
                 
-                <a href="<?=BASE_URL?>organisation">редактор</a>
                 <div>
                     Должность:<br><input type="text" v-model="position" name="position" class="input input_text">
                 </div>
@@ -135,6 +133,7 @@ var app = new Vue({
         message: '',
         edit_mode: false,
         fio: '',
+        id_org: '',
     },
     watch: {
         position: function () {
@@ -178,7 +177,7 @@ var app = new Vue({
                     this.getExecutors(id);
                     // запрашиваем организации
                     this.getOrganisations();
-                    this.userData.id_org = parseInt(this.lead.id_organisation);
+                    this.id_org = parseInt(this.lead.id_organisation);
                 },
                 function (err) {
                     console.log(err);
@@ -210,6 +209,7 @@ var app = new Vue({
             this.userData.position = this.position;
             this.userData.id_parent = this.lead.id_user;
             this.userData.fio = this.fio;
+            this.userData.id_org = this.id_org;
 
             this.$http.post(this.server + 'index/', this.userData).then(
                 function (otvet) {
@@ -242,7 +242,7 @@ var app = new Vue({
             this.position = '';
             this.$http.get(this.server + 'getuserinfo/' + id_user).then(
                 function (otvet) {
-                    this.userData.id_org = otvet.data.id_organisation;
+                    this.id_org = otvet.data.id_organisation;
                     this.userData.login = otvet.data.login;
                     this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
                     this.userData.id_user = id_user;
@@ -264,6 +264,7 @@ var app = new Vue({
             this.userData.position = this.position;
             this.userData.id_parent = this.lead.id_user;
             this.userData.fio = this.fio;
+            this.userData.id_org = this.id_org;
 
             this.$http.post(this.server + 'updateinfo/', this.userData).then(
                 function (otvet) {
@@ -283,6 +284,7 @@ var app = new Vue({
         clearForm: function () {
             this.userData = {};
             this.position = '';
+            this.fio = '';
         },
     },
     created: function() {
