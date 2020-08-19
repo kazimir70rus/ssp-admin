@@ -66,7 +66,8 @@
                 <select class="input" v-model="userData.id_org" name="id_org">
                     <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
                 </select>
-
+                
+                <a href="<?=BASE_URL?>organisation">редактор</a>
                 <div>
                     Должность:<br><input type="text" v-model="position" name="position" class="input input_text">
                 </div>

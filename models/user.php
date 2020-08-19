@@ -124,7 +124,7 @@ Class User
 
 
     // возвращает список организаций
-    function getOrganisations()
+    function getOrganisations_delete()
     {
         $query = 'select id_organisation, name from organisations order by name';
 

@@ -1,8 +1,8 @@
 <?php
 
-$users = new \ssp\models\User($db);
+$organisations = new \ssp\models\Organisation($db);
 
-$organisations = $users->getOrganisations();
+$list_organisations = $organisations->getList();
 
-\ssp\module\Tools::send_json($organisations);
+\ssp\module\Tools::send_json($list_organisations);
 
