@@ -13,6 +13,23 @@ Class Organisation
     }
 
 
+    // добавляет организацию
+    function add($name)
+    {
+        $query = 'insert into organisations (name) values (:name)';
+
+        return $this->db->insertData($query, ['name' => $name]);
+    }
+
+
+    // обновляем наименование организации
+    function updateName($name, $id)
+    {
+        $query = 'update organisations set name = :name where id_organisation = :id';
+
+        return $this->db->updateData($query, ['name' => $name, 'id' => $id]);
+    }
+
     // возвращает список организаций
     function getList()
     {

@@ -14,27 +14,25 @@
 <br>
 
 <div id="app">
-    <div>
-        <select class="input" v-model="id">
-            <option value="0">выбрать для редактирования</option>
-            <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
-        </select>
+    <select class="input" v-model="id">
+        <option value="0">выбрать для редактирования</option>
+        <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
+    </select>
+    <br>
+    <div v-if="parseInt(id)">
+        отредактируйте или <a href="#" v-on:click="clearId">создайте новую</a>
     </div>
-
-    <div>
-        <div v-if="parseInt(id)">
-            отредактируйте или <a href="#" v-on:click="clearId">создайте новую</a>
-        </div>
-        <div v-else>
-            создать новую организацию
-        </div>
-        <input type="text" v-model="name" class="input input_text">
+    <div v-else>
+        создать новую организацию
     </div>
-
-    
-    <div>
-        <input type="button" value="Сохранить" class="input input_button">
-    </div>
+    <form method="post">
+        <input type="text" v-model="name" class="input input_text" name="name" required>
+        <input type="hidden" name="id" v-model="id">
+        <br>
+        <input type="submit" value="Сохранить" class="input input_button">
+        <br>
+    </form>
+    <a href="<?=BASE_URL?>"><button class="input input_button">Отмена</button></a>
 </div>
 
 <script src="<?=BASE_URL?>js/vue.min.js"></script>
