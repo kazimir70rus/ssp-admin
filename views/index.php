@@ -24,7 +24,7 @@
 <body>
 
 <?php require_once 'logout.html' ?>
-
+<a href="<?=BASE_URL?>type_result">Вид результата</a>
 <h3>Добавление нового пользователя</h3>
 
 <br>
