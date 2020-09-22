@@ -9,7 +9,7 @@
 
 <?php require_once 'logout.html' ?>
 <div id="app">
-    <input type="text" v-model="result_name" class="input input_text"><br>
+    <input type="text" v-model="report_name" class="input input_text"><br>
     <div v-if="edit_mode">
         <button class="input input_button" v-on:click="save">Сохранить изменения</button><br>
         <button class="input input_button" v-on:click="exit_edit">Отмена</button>
@@ -18,7 +18,7 @@
         <button class="input input_button" v-on:click="save">Добавить</button>
     </div>
     <br>
-    <template v-for="(type_res, index) in type_results">
+    <template v-for="(type_res, index) in type_reports">
         <div>
             <a href="#" v-on:click="edit(index)">{{type_res.name}}</a>
         </div>
@@ -36,18 +36,18 @@ var app = new Vue({
     el: '#app',
     data: {
         server: '<?=BASE_URL?>',
-        result_name: '',
-        type_results: [],
-        id_result: '',
+        report_name: '',
+        type_reports: [],
+        id_report: '',
         edit_mode: false,
     },
     watch: {
     },
     methods: {
         getTypeResults: function () {
-            this.$http.get(this.server + 'gettyperesults').then(
+            this.$http.get(this.server + 'gettypereports').then(
                 function (otvet) {
-                    this.type_results = otvet.data;
+                    this.type_reports = otvet.data;
                 },
                 function (err) {
                     console.log(err);
@@ -55,9 +55,9 @@ var app = new Vue({
             );
         },
         save: function () {
-            this.$http.post(this.server + 'addtyperesult', {name: this.result_name, id_result: this.id_result}).then(
+            this.$http.post(this.server + 'addtypereport', {name: this.report_name, id_report: this.id_report}).then(
                 function (otvet) {
-                    //this.type_results = otvet.data;
+                    //this.type_reports = otvet.data;
                     this.exit_edit();
                     this.getTypeResults();
                 },
@@ -67,13 +67,13 @@ var app = new Vue({
             );
         },
         edit: function (index) {
-            this.result_name = this.type_results[index].name;
-            this.id_result = this.type_results[index].id_result;
+            this.report_name = this.type_reports[index].name;
+            this.id_report = this.type_reports[index].id_report;
             this.edit_mode = true;
         },
         exit_edit: function () {
-            this.result_name = '';
-            this.id_result = '';
+            this.report_name = '';
+            this.id_report = '';
             this.edit_mode = false;
         },
     },

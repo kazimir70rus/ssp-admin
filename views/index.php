@@ -24,7 +24,7 @@
 <body>
 
 <?php require_once 'logout.html' ?>
-<a href="<?=BASE_URL?>type_result">Вид результата</a>
+<a href="<?=BASE_URL?>type_result">Справочник "Вид результата"</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=BASE_URL?>type_report">Справочник "Вид отчета"</a><br><br>
 <h3>Добавление нового пользователя</h3>
 
 <br>
@@ -65,7 +65,7 @@
                 <select class="input" v-model="id_org" name="id_org">
                     <option v-for="org in organisations" v-bind:value="org.id_organisation">{{org.name}}</option>
                 </select>
-                
+
                 <div>
                     Должность:<br><input type="text" v-model="position" name="position" class="input input_text">
                 </div>
