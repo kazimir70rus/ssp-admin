@@ -26,8 +26,8 @@ Class User
     function add($info)
     {
         $query = '
-            insert into users (name, pass, id_position, id_parent, id_organisation, is_controller, fio)
-            values (:login, password(:password), :id_position, :parent, :id_org, :is_controller, :fio)';
+            insert into users (name, pass, id_position, id_parent, id_organisation, is_controller, fio, phone)
+            values (:login, password(:password), :id_position, :parent, :id_org, :is_controller, :fio, :phone)';
 
         return $this
                     ->db
@@ -39,6 +39,7 @@ Class User
                                             'id_org'        => $info['id_org'],
                                             'is_controller' => $info['is_controller'],
                                             'fio'           => $info['fio'],
+                                            'phone'         => $info['phone'],
                                          ]);
     }
 
@@ -147,7 +148,8 @@ Class User
                 positions.name as position, 
                 users.id_organisation as id_organisation,
                 organisations.name as organisation,
-                is_controller
+                is_controller,
+                phone
             from
                 users
                 join positions using (id_position)
@@ -168,6 +170,7 @@ Class User
                     'id_user'       => $info['id_user'],
                     'login'         => $info['login'],
                     'fio'           => $info['fio'],
+                    'phone'         => $info['phone'],
                     'id_position'   => $info['id_position'],
                     'id_parent'     => $info['id_parent'],
                     'id_org'        => $info['id_org'],
@@ -186,6 +189,7 @@ Class User
                 set
                     name = :login,
                     fio = :fio,
+                    phone = :phone,
                     id_position = :id_position,
                     id_organisation = :id_org,
                     id_parent = :id_parent,

@@ -83,6 +83,10 @@
                 </div>
 
                 <div>
+                    Телефон:<br><input type="text" v-model="phone" name="phone" class="input input_text">
+                </div>
+
+                <div>
                     Логин:<br><input type="text" v-model="userData.login" name="login" class="input input_text">
                 </div>
 
@@ -134,6 +138,7 @@ var app = new Vue({
         edit_mode: false,
         fio: '',
         id_org: '',
+        phone: '',
     },
     watch: {
         position: function () {
@@ -210,6 +215,7 @@ var app = new Vue({
             this.userData.id_parent = this.lead.id_user;
             this.userData.fio = this.fio;
             this.userData.id_org = this.id_org;
+            this.userData.phone = this.phone.replace(/[^\d]/g, '');
 
             this.$http.post(this.server + 'index/', this.userData).then(
                 function (otvet) {
@@ -247,6 +253,7 @@ var app = new Vue({
                     this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
                     this.userData.id_user = id_user;
                     this.fio = otvet.data.fio;
+                    this.phone = otvet.data.phone;
                     this.position = otvet.data.position;
                     this.edit_mode = true;
                 },
@@ -264,6 +271,7 @@ var app = new Vue({
             this.userData.position = this.position;
             this.userData.id_parent = this.lead.id_user;
             this.userData.fio = this.fio;
+            this.userData.phone = this.phone.replace(/[^\d]/g, '');
             this.userData.id_org = this.id_org;
 
             this.$http.post(this.server + 'updateinfo/', this.userData).then(
@@ -285,6 +293,7 @@ var app = new Vue({
             this.userData = {};
             this.position = '';
             this.fio = '';
+            this.phone = '';
         },
     },
     created: function() {
