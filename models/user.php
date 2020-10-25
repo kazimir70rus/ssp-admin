@@ -170,7 +170,7 @@ Class User
                     'id_user'       => $info['id_user'],
                     'login'         => $info['login'],
                     'fio'           => $info['fio'],
-                    'phone'         => $info['phone'],
+                    'phone'         => is_numeric($info['phone']) ? $info['phone'] : NULL,
                     'id_position'   => $info['id_position'],
                     'id_parent'     => $info['id_parent'],
                     'id_org'        => $info['id_org'],

@@ -253,7 +253,7 @@ var app = new Vue({
                     this.userData.is_controller = (parseInt(otvet.data.is_controller) == 1);
                     this.userData.id_user = id_user;
                     this.fio = otvet.data.fio;
-                    this.phone = otvet.data.phone;
+                    this.phone = (otvet.data.phone) ? otvet.data.phone : '';
                     this.position = otvet.data.position;
                     this.edit_mode = true;
                 },
