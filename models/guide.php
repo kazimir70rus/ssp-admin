@@ -16,9 +16,18 @@ Class Guide
     // возвращает список видов результата
     function getTypeResults()
     {
-        $query = 'select id_result, name from type_result order by name';
+        $query = 'select id_result, name, visible from type_result order by name';
 
         return $this->db->getList($query);
+    }
+
+
+    // изменяет видимость
+    function changeVisibleResult($id_result, $visible)
+    {
+        $query = 'update type_result set visible = :visible where id_result = :id_result';
+
+        return $this->db->updateData($query, ['id_result' => $id_result, 'visible' => $visible]);
     }
 
 

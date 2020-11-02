@@ -18,11 +18,24 @@
         <button class="input input_button" v-on:click="save">Добавить</button>
     </div>
     <br>
-    <template v-for="(type_res, index) in type_results">
-        <div>
-            <a href="#" v-on:click="edit(index)">{{type_res.name}}</a>
-        </div>
-    </template>
+    <table>
+        <tr>
+            <th>Видимость</th>
+            <th>Наименование (редактир.)</th>
+        </tr>
+        <template v-for="(type_res, index) in type_results">
+            <tr>
+                <td><input
+                        type="checkbox"
+                        v-model="type_res.visible"
+                        v-bind:true-value="1"
+                        v-bind:false-value="0"
+                        v-on:click="change_visible(index)"
+                    ></td>
+                <td><a href="#" v-on:click="edit(index)">{{type_res.name}}</a></td>
+            </tr>
+        </template>
+    </table>
     <br>
     <a href="<?=BASE_URL?>"><button class="input input_button">Назад</button></a>
 </div>
@@ -54,10 +67,21 @@ var app = new Vue({
                 }
             );
         },
+        change_visible: function (index) {
+            const state = (this.type_results[index].visible == '0') ? '1' : '0';
+            this.$http.post(this.server + 'res_visible_change', {id_result: this.type_results[index].id_result, visible: state}).then(
+                function (otvet) {
+                    this.exit_edit();
+                    this.getTypeResults();
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        },
         save: function () {
             this.$http.post(this.server + 'addtyperesult', {name: this.result_name, id_result: this.id_result}).then(
                 function (otvet) {
-                    //this.type_results = otvet.data;
                     this.exit_edit();
                     this.getTypeResults();
                 },
